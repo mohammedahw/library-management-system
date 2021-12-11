@@ -4,7 +4,8 @@ import dotenv from "dotenv";
 import cookiepParser from "cookie-parser";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
-import { router } from "./routes/books.js";
+import { bookRouter } from "./routes/books.js";
+import { usersRouter } from "./routes/users.js";
 
 dotenv.config();
 const app = express();
@@ -23,6 +24,7 @@ app.get("/", (req, res) => {
 });
 
 //routes
-app.use("/books", router);
+app.use("/books", bookRouter);
+app.use("/users", usersRouter);
 
 app.listen(PORT);
