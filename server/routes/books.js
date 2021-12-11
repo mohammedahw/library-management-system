@@ -1,9 +1,8 @@
-const express = require("express");
-const router = express.Router();
-const controller = require("./controller");
+import express from "express";
+import { getBooks, getBooksByGenre, getBookByAuthor } from "./controller.js";
 
-router.get("/", controller.getBooks);
-router.get("/:genre", controller.getBooksByGenre);
-router.post("/", controller.addBook);
+export const router = express.Router();
 
-module.exports = router;
+router.get("/", getBooks);
+router.get("/genres/:genre", getBooksByGenre);
+router.get("/authors/:author", getBookByAuthor);

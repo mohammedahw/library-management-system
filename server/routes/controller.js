@@ -1,34 +1,29 @@
-const pool = require("../config/database");
-const queries = require("./queires");
+import { pool } from "../config/database.js";
+import {
+  selectBookByAuthor,
+  selectBooksByGenre,
+  selectBooks,
+} from "./queires.js";
 
-const getBooks = (req, res) => {
-  pool.query(queries.getBooks, (error, results) => {
+export const getBooks = (_, res) => {
+  pool.query(selectBooks, (error, results) => {
     if (error) throw error;
     res.status(200).json(results.rows);
   });
 };
 
-const getBooksByGenre = (req, res) => {
+export const getBooksByGenre = (req, res) => {
   const genre = req.params.genre;
-  pool.query(queries.getBooksByGenre, [genre], (error, results) => {
+  pool.query(selectBooksByGenre, [genre], (error, results) => {
     if (error) throw error;
     res.status(200).json(results.rows);
   });
 };
 
-const addBook = (req, res) => {
-  console.log(req.body.name);
-  const { id, name, author, genre } = req.body;
-  // checking if the book exists
-  pool.query(queries.checkBook, [name], (error, results) => {
-    if (results.rows.length) {
-      res.send("book already exists");
-    }
-  });
-  //add book to database
-  pool.query(queries.addBook, [name, author, genre], (error, results) => {
+export const getBookByAuthor = (req, res) => {
+  const author = req.params.author;
+  pool.query(selectBookByAuthor, [author], (error, results) => {
     if (error) throw error;
+    res.status(200).json(results.rows);
   });
 };
-
-module.exports = { getBooks, getBooksByGenre, addBook };
