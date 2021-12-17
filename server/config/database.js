@@ -11,7 +11,7 @@ export const localPool = new Pool.Pool({
 const poolConfig = process.env.DATABASE_URL
   ? {
       connectionString: process.env.DATABASE_URL,
-      ssl: { rejectUnathorized: false },
+      ssl: { rejectUnauthorized: false },
     }
   : localPool;
 
