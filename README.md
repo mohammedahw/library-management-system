@@ -1,2 +1,2 @@
 # libary-managemnt-system
-Project for Databae Management System class in college.
+Project for Databae Management Systems class in college.
