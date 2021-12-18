@@ -9,6 +9,7 @@ import {
 } from "./queires.js";
 import bcrypt from "bcrypt";
 import { jwtTokens } from "./jwt-helpers.js";
+import jwt from "jsonwebtoken";
 
 export const getBooks = (_, res) => {
   localPool.query(selectBooks, (error, results) => {
@@ -54,7 +55,6 @@ export const createUser = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  console.log(req.headers);
   try {
     const { email, password } = req.body;
     const users = await localPool.query(checkUser, [email]);
@@ -69,8 +69,8 @@ export const login = async (req, res) => {
     if (!validPassword)
       return res.status(404).json({ error: "Incorrect password" });
     let tokens = jwtTokens(users.rows[0]);
-    res.json(tokens);
     res.cookie("refresh_token", tokens.refreshToken, { httpOnly: true });
+    res.json(tokens);
   } catch (err) {
     res.status(401).json({ error: err.message });
   }
@@ -78,8 +78,27 @@ export const login = async (req, res) => {
 
 export const getAuth = (req, res) => {
   try {
-    const refreshToken = req.cookie.refresh_token;
-    console.log(refreshToken);
+    const refreshToken = req.cookies.refresh_token;
+    if (refreshToken === null)
+      return res.status(401).json({ error: "Null refresh token" });
+    jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECERT,
+      (error, user) => {
+        if (error) return res.status(403).json({ error: error.message });
+        let tokens = jwtTokens(user);
+        res.json(tokens);
+      }
+    );
+  } catch (error) {
+    res.status(401).json({ error: error.message });
+  }
+};
+
+export const delAuth = (req, res) => {
+  try {
+    res.clearCookie("refresh_token");
+    return res.status(200).json({ message: "refresh token deleted." });
   } catch (error) {
     res.status(500).json({ error: error });
   }

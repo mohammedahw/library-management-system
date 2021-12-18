@@ -20,13 +20,13 @@ app.use(json());
 app.use(cookiepParser());
 app.use("/", express.static(join(__dirname, "public")));
 
-app.get("/", (req, res) => {
+app.get("/", (_, res) => {
   res.sendStatus(200);
 });
 
 //routes
-app.use("/books", bookRouter);
-app.use("/users", usersRouter);
-app.use("/auth", authRouter);
+app.use("/api/books", bookRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/auth", authRouter);
 
 app.listen(PORT);
