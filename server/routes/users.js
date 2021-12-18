@@ -1,6 +1,6 @@
 import express from "express";
 import { authenticateToken } from "../middleware/authorization.js";
-import { createUser, getUsers } from "./controller.js";
+import { createUser, getUsers } from "../utils/controller.js";
 
 export const usersRouter = express.Router();
 

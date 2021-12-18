@@ -6,9 +6,9 @@ import {
   selectUsers,
   insertUser,
   checkUser,
-} from "../utils/queires.js";
+} from "./queires.js";
 import bcrypt from "bcrypt";
-import { jwtTokens } from "../utils/jwt-helpers.js";
+import { jwtTokens } from "./jwt-helpers.js";
 
 export const getBooks = (_, res) => {
   localPool.query(selectBooks, (error, results) => {
