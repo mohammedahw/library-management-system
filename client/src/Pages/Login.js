@@ -1,56 +1,24 @@
-import {
-  Button,
-  Box,
-  Grid,
-  Typography,
-  AppBar,
-  Toolbar,
-  IconButton,
-} from "@mui/material";
-import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import { Button, Box, Grid, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import React from "react";
+import React, { useContext, useState } from "react";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import { useRef } from "react";
+import { Navbar } from "../components/Navbar";
+import { userContext } from "../Helper/User";
+import axios from "axios";
 
 export const Login = () => {
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { loggedIn, setLoggedIn } = useContext(userContext);
 
   const handleLogin = () => {
-    return;
+    console.log(email, password);
   };
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" sx={{ backgroundColor: "#161b22" }}>
-          <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            >
-              <LibraryBooksIcon />
-            </IconButton>
-            <Button sx={{ textTransform: "capitalize" }}>
-              <Link
-                to="/"
-                underline="none"
-                color="white"
-                style={{ textDecoration: "none", color: "white" }}
-              >
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                  Home
-                </Typography>
-              </Link>
-            </Button>
-          </Toolbar>
-        </AppBar>
-      </Box>
+      <Navbar main={false} />
       <Box flexGrow={1}>
         <Grid
           container
@@ -70,11 +38,10 @@ export const Login = () => {
               variant="filled"
               size="small"
               placeholder="email"
-              ref={emailRef}
               sx={{ my: "auto", backgroundColor: "#EEEDE7" }}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
-              ref={passwordRef}
               hiddenLabel
               id="filleed-hidden-label-small"
               variant="filled"
@@ -82,6 +49,7 @@ export const Login = () => {
               placeholder="password"
               type="password"
               sx={{ backgroundColor: "#EEEDE7" }}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <Button onClick={handleLogin}>Login</Button>
             <Typography

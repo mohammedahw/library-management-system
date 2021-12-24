@@ -10,7 +10,7 @@ import {
 import { Link } from "react-router-dom";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 
-export const Navbar = () => {
+export const Navbar = ({ main }) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ backgroundColor: "#161b22" }}>
@@ -37,15 +37,19 @@ export const Navbar = () => {
             </Link>
           </Button>
           <Button sx={{ ml: "auto", textTransform: "capitalize" }}>
-            <Link
-              to="/login"
-              underline="none"
-              style={{ textDecoration: "none", color: "white" }}
-            >
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Login
-              </Typography>
-            </Link>
+            {main ? (
+              <Link
+                to="/login"
+                underline="none"
+                style={{ textDecoration: "none", color: "white" }}
+              >
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                  Login
+                </Typography>
+              </Link>
+            ) : (
+              ""
+            )}
           </Button>
         </Toolbar>
       </AppBar>

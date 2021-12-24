@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Navbar } from "../components/Navbar";
 import axios from "axios";
 import { useEffect, useReducer } from "react";
@@ -14,6 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
+import { userContext } from "../Helper/User";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -49,7 +50,7 @@ const reducer = (state, action) => {
 
 export const Home = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-
+  const { loggedIn, setLoggedIn } = useContext(userContext);
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/books")
@@ -60,10 +61,9 @@ export const Home = () => {
         dispatch({ type: "FETCH_ERROR" });
       });
   }, []);
-
   return (
     <>
-      <Navbar />
+      <Navbar main={true} />
       <Box sx={{ flexGrow: 1 }}>
         <Grid
           container
