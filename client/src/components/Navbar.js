@@ -13,7 +13,7 @@ import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 export const Navbar = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ backgroundColor: "#161b22" }}>
         <Toolbar>
           <IconButton
             size="large"
