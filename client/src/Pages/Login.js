@@ -11,6 +11,8 @@ import Cookies from "js-cookie";
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // eslint-disable-next-line
   const { user, setUser } = useContext(userContext);
 
   const handleLogin = async () => {

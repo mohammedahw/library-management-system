@@ -18,13 +18,11 @@ function App() {
     loggedIn: false,
   });
 
-  const refreshToken = async () => {
+  const refreshToken = () => {
     try {
-      const results = await axios.get(
-        "http://localhost:5000/api/auth/refresh_token",
-        { withCredentials: true }
-      );
-      console.log(results);
+      axios.get("http://localhost:5000/api/auth/refresh_token", {
+        withCredentials: true,
+      });
     } catch (err) {
       console.error(err);
     }

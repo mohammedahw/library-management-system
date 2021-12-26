@@ -13,6 +13,8 @@ export const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassowrd, setConfirmPassword] = useState("");
+
+  // eslint-disable-next-line
   const { user, setUser } = useContext(userContext);
 
   const handleRegister = async () => {
