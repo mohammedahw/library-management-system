@@ -26,28 +26,40 @@ function App() {
       );
       console.log(results);
     } catch (err) {
-      console.log("error", err);
+      console.error(err);
     }
   };
 
-  setInterval(() => {
-    refreshToken();
-  }, 119999);
+  if (user.loggedIn) {
+    setInterval(() => {
+      refreshToken();
+    }, 119988);
+  }
 
   useEffect(() => {
     const email = localStorage.getItem("email");
-    if (email) setUser({ userEmail: email, loggedIn: true });
-  });
+    if (email)
+      setUser(() => {
+        return { userEmail: email, loggedIn: true };
+      });
+  }, []);
 
   return (
     <userContext.Provider value={{ user, setUser }}>
       <div className="App">
         <Router>
-          {user.loggedIn && <Navigate to="/" />}
           <Routes>
             <Route exact path="/" element={<Home />} />
-            <Route exact path="/login" element={<Login />} />
-            <Route exact path="/register" element={<Register />} />
+            <Route
+              exact
+              path="/login"
+              element={user.loggedIn ? <Navigate to="/" /> : <Login />}
+            />
+            <Route
+              exact
+              path="/register"
+              element={user.loggedIn ? <Navigate to="/" /> : <Register />}
+            />
           </Routes>
         </Router>
       </div>

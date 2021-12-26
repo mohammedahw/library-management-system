@@ -57,6 +57,17 @@ export const Navbar = ({ main }) => {
               </Button>
             </Link>
           </Button>
+          {user.loggedIn && (
+            <Button style={{ color: "white" }}>
+              <Typography
+                variant="h6"
+                component="div"
+                style={{ textTransform: "capitalize" }}
+              >
+                Your Library
+              </Typography>
+            </Button>
+          )}
           {main && !user.loggedIn && (
             <Button sx={{ ml: "auto", textTransform: "capitalize" }}>
               <Link
@@ -77,19 +88,26 @@ export const Navbar = ({ main }) => {
             </Button>
           )}
           {user.loggedIn && main && (
-            <Button
-              sx={{ ml: "auto" }}
-              style={{ color: "white" }}
-              onClick={() => handleLogOut()}
-            >
-              <Typography
-                variant="h6"
-                component="div"
-                style={{ textTransform: "lowercase" }}
-              >
-                {user.userEmail}
-              </Typography>
-            </Button>
+            <>
+              <Button sx={{ ml: "auto" }} style={{ color: "white" }}>
+                <Typography
+                  variant="h6"
+                  component="div"
+                  style={{ textTransform: "lowercase" }}
+                >
+                  {user.userEmail}
+                </Typography>
+              </Button>
+              <Button style={{ color: "red" }} onClick={handleLogOut}>
+                <Typography
+                  variant="h6"
+                  component="div"
+                  style={{ textTransform: "capitalize" }}
+                >
+                  Logout
+                </Typography>
+              </Button>
+            </>
           )}
         </Toolbar>
       </AppBar>
