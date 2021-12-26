@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Navbar } from "../components/Navbar";
 import axios from "axios";
 import { useEffect, useReducer } from "react";
@@ -14,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { userContext } from "../Helper/User";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -50,7 +50,7 @@ const reducer = (state, action) => {
 
 export const Home = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { loggedIn, setLoggedIn } = useContext(userContext);
+
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/books")
@@ -74,42 +74,67 @@ export const Home = () => {
           justifyContent="center"
           style={{ minHeight: "50vh" }}
         >
-          {state.loading
-            ? "lodaing"
-            : state.books.map((book) => {
-                const { id, book_name, author, description, genre, img } = book;
-                return (
-                  <Grid item xs={2} sm={4} md={4} key={id} sx={{ my: 5 }}>
-                    <Item
+          {state.loading ? (
+            <Box>
+              <CircularProgress />
+            </Box>
+          ) : (
+            state.books.map((book) => {
+              const { id, book_name, author, genre, img } = book;
+              return (
+                <Grid item xs={2} sm={4} md={4} key={id} sx={{ my: 5 }}>
+                  <Item
+                    sx={{
+                      maxWidth: 250,
+                      backgroundColor: "black",
+                      mx: "auto",
+                    }}
+                  >
+                    <Card
                       sx={{
-                        maxWidth: 345,
+                        maxWidth: 250,
+                        color: "white",
                         backgroundColor: "black",
-                        mx: "auto",
                       }}
                     >
-                      <Card
-                        sx={{
-                          maxWidth: 345,
-                          color: "white",
-                          backgroundColor: "black",
-                        }}
-                      >
-                        <CardMedia component="img" height="300" image={img} />
-                        <CardContent>
-                          <Typography gutterBottom variant="h5" component="div">
-                            {book_name}
+                      <CardMedia component="img" height="200" image={img} />
+                      <CardContent>
+                        <Typography
+                          gutterBottom
+                          variant="body2"
+                          component="div"
+                        >
+                          {book_name}
+                        </Typography>
+                      </CardContent>
+                      <CardActions>
+                        <Button size="small">
+                          <Typography
+                            gutterBottom
+                            variant="body3"
+                            component="div"
+                            style={{ textTransform: "capitalize" }}
+                          >
+                            {genre}
                           </Typography>
-                          <Typography variant="body2">{description}</Typography>
-                        </CardContent>
-                        <CardActions>
-                          <Button size="small">{genre}</Button>
-                          <Button size="small">{author}</Button>
-                        </CardActions>
-                      </Card>
-                    </Item>
-                  </Grid>
-                );
-              })}
+                        </Button>
+                        <Button size="small">
+                          <Typography
+                            gutterBottom
+                            variant="body3"
+                            component="div"
+                            style={{ textTransform: "capitalize" }}
+                          >
+                            {author}
+                          </Typography>
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  </Item>
+                </Grid>
+              );
+            })
+          )}
         </Grid>
       </Box>
     </>

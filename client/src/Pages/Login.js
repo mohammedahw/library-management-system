@@ -1,19 +1,41 @@
 import { Button, Box, Grid, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
 import React, { useContext, useState } from "react";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { Navbar } from "../components/Navbar";
 import { userContext } from "../Helper/User";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { loggedIn, setLoggedIn } = useContext(userContext);
+  const { user, setUser } = useContext(userContext);
 
-  const handleLogin = () => {
-    console.log(email, password);
+  const handleLogin = async () => {
+    if (!email) {
+      alert("please enter your email");
+      return;
+    }
+    if (!password) {
+      alert("please enter your password");
+      return;
+    }
+    try {
+      const results = await axios.post("http://localhost:5000/api/auth", {
+        email,
+        password,
+      });
+      setUser({
+        userEmail: email,
+        loggedIn: true,
+      });
+      Cookies.set("refresh_token", results.data.refreshToken);
+      localStorage.setItem("email", email);
+    } catch (err) {
+      alert("invalid nformation");
+    }
   };
 
   return (
@@ -51,7 +73,15 @@ export const Login = () => {
               sx={{ backgroundColor: "#EEEDE7" }}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Button onClick={handleLogin}>Login</Button>
+            <Button onClick={handleLogin}>
+              <Typography
+                variant="h6"
+                component="div"
+                style={{ textTransform: "capitalize" }}
+              >
+                Login
+              </Typography>
+            </Button>
             <Typography
               variant="h6"
               style={{
@@ -74,7 +104,15 @@ export const Login = () => {
                 textAlign: "center",
               }}
             >
-              <Button>Sign Up</Button>
+              <Button>
+                <Typography
+                  variant="h6"
+                  component="div"
+                  style={{ textTransform: "capitalize" }}
+                >
+                  Sign Up
+                </Typography>
+              </Button>
             </Link>
           </Stack>
         </Grid>

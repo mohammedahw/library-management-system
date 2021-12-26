@@ -11,11 +11,14 @@ import { authRouter } from "./routes/auth.js";
 dotenv.config();
 const app = express();
 const PORT = process.env.PROT || 5000;
-const corsOptions = { credentials: true, origin: process.env.URL || "*" };
+const corsOptions = {
+  credentials: true,
+  origin: process.env.URL || "http://localhost:3000",
+};
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 //middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(json());
 app.use(cookiepParser());
 app.use("/", express.static(join(__dirname, "public")));

@@ -9,8 +9,20 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import { useContext } from "react";
+import { userContext } from "../Helper/User";
+import Cookies from "js-cookie";
 
 export const Navbar = ({ main }) => {
+  const { user, setUser } = useContext(userContext);
+
+  const handleLogOut = () => {
+    localStorage.removeItem("email");
+    Cookies.remove("refresh_token");
+    setUser({ email: "", loggedIn: false });
+    return;
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ backgroundColor: "#161b22" }}>
@@ -29,28 +41,56 @@ export const Navbar = ({ main }) => {
               to="/"
               underline="none"
               color="white"
-              style={{ textDecoration: "none", color: "white" }}
+              style={{
+                textDecoration: "none",
+                color: "white",
+              }}
             >
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Home
-              </Typography>
+              <Button variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                <Typography
+                  variant="h6"
+                  component="div"
+                  style={{ textTransform: "capitalize" }}
+                >
+                  Home
+                </Typography>
+              </Button>
             </Link>
           </Button>
-          <Button sx={{ ml: "auto", textTransform: "capitalize" }}>
-            {main ? (
+          {main && !user.loggedIn && (
+            <Button sx={{ ml: "auto", textTransform: "capitalize" }}>
               <Link
                 to="/login"
                 underline="none"
                 style={{ textDecoration: "none", color: "white" }}
               >
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                  Login
-                </Typography>
+                <Button variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                  <Typography
+                    variant="h6"
+                    component="div"
+                    sx={{ textTransform: "capitalize" }}
+                  >
+                    Login
+                  </Typography>
+                </Button>
               </Link>
-            ) : (
-              ""
-            )}
-          </Button>
+            </Button>
+          )}
+          {user.loggedIn && main && (
+            <Button
+              sx={{ ml: "auto" }}
+              style={{ color: "white" }}
+              onClick={() => handleLogOut()}
+            >
+              <Typography
+                variant="h6"
+                component="div"
+                style={{ textTransform: "lowercase" }}
+              >
+                {user.userEmail}
+              </Typography>
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

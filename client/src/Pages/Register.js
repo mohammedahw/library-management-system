@@ -1,20 +1,40 @@
 import { Button, Box, Grid, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
 import React from "react";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { useState, useContext } from "react";
 import { Navbar } from "../components/Navbar";
 import { userContext } from "../Helper/User";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 export const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassowrd, setConfirmPassword] = useState("");
-  const { loggedIn, setLoggedIn } = useContext(userContext);
+  const { user, setUser } = useContext(userContext);
 
-  const handleRegister = () => {
-    console.log(email, password, confirmPassowrd);
+  const handleRegister = async () => {
+    if (password !== confirmPassowrd) {
+      alert("passwords dont match!");
+      return;
+    }
+    if (email.length <= 0) {
+      alert("please enter your email");
+      return;
+    }
+    try {
+      const results = await axios.post("http://localhost:5000/api/users", {
+        email: email,
+        password: password,
+      });
+      setUser({ userEmail: email, loggedIn: true });
+      Cookies.set("refresh_token", results.data.refreshToken);
+      localStorage.setItem("email", email);
+    } catch (err) {
+      alert("Invalid Information");
+    }
   };
 
   return (
@@ -62,7 +82,15 @@ export const Register = () => {
               placeholder="confirm password"
               sx={{ backgroundColor: "#EEEDE7" }}
             />
-            <Button onClick={handleRegister}>Register</Button>
+            <Button onClick={handleRegister}>
+              <Typography
+                variant="h6"
+                component="div"
+                style={{ textTransform: "capitalize" }}
+              >
+                Register
+              </Typography>
+            </Button>
             <Typography
               variant="h6"
               style={{
@@ -85,7 +113,15 @@ export const Register = () => {
                 textAlign: "center",
               }}
             >
-              <Button>Sign In</Button>
+              <Button>
+                <Typography
+                  variant="h6"
+                  component="div"
+                  style={{ textTransform: "capitalize" }}
+                >
+                  Sign In
+                </Typography>
+              </Button>
             </Link>
           </Stack>
         </Grid>
