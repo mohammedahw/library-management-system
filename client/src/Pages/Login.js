@@ -34,7 +34,7 @@ export const Login = () => {
       Cookies.set("refresh_token", results.data.refreshToken);
       localStorage.setItem("email", email);
     } catch (err) {
-      alert("invalid nformation");
+      alert("invalid Information");
     }
   };
 

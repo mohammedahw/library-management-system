@@ -20,7 +20,7 @@ export const Register = () => {
       alert("passwords dont match!");
       return;
     }
-    if (email.length <= 0) {
+    if (!email) {
       alert("please enter your email");
       return;
     }
