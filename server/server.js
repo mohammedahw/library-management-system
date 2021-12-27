@@ -7,6 +7,7 @@ import { fileURLToPath } from "url";
 import { bookRouter } from "./routes/books.js";
 import { usersRouter } from "./routes/users.js";
 import { authRouter } from "./routes/auth.js";
+import { userDataRouter } from "./routes/user_data.js";
 
 dotenv.config();
 const app = express();
@@ -31,5 +32,6 @@ app.get("/", (_, res) => {
 app.use("/api/books", bookRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/user_data", userDataRouter);
 
 app.listen(PORT);

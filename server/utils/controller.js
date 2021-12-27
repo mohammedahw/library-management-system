@@ -6,6 +6,8 @@ import {
   selectUsers,
   insertUser,
   checkUser,
+  selectUsersData,
+  insertUserData,
 } from "./queires.js";
 import bcrypt from "bcrypt";
 import { jwtTokens } from "./jwt-helpers.js";
@@ -99,6 +101,29 @@ export const delAuth = (req, res) => {
   try {
     res.clearCookie("refresh_token");
     return res.status(200).json({ message: "refresh token deleted." });
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+
+export const getUsersData = (req, res) => {
+  try {
+    localPool.query(selectUsersData, (error, results) => {
+      if (error) throw error;
+      res.status(200).json(results.rows);
+    });
+  } catch (error) {
+    res.status(500).json({ error: err });
+  }
+};
+
+export const insertIntoUserData = async (req, res) => {
+  try {
+    const results = await localPool.query(insertUserData, [
+      req.body.email,
+      req.body.book_name,
+    ]);
+    res.status(200).json(results.rows[0]);
   } catch (error) {
     res.status(500).json({ error: error });
   }
