@@ -12,6 +12,7 @@ import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { Link } from "react-router-dom";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -63,16 +64,22 @@ export const BookCard = ({
                   {genre}
                 </Typography>
               </Button>
-              <Button size="small">
-                <Typography
-                  gutterBottom
-                  variant="body3"
-                  component="div"
-                  style={{ textTransform: "capitalize" }}
-                >
-                  {author}
-                </Typography>
-              </Button>
+              <Link
+                underline="none"
+                style={{ textDecoration: "none", color: "white" }}
+                to={`/author/${author}`}
+              >
+                <Button size="small">
+                  <Typography
+                    gutterBottom
+                    variant="body3"
+                    component="div"
+                    style={{ textTransform: "capitalize" }}
+                  >
+                    {author}
+                  </Typography>
+                </Button>
+              </Link>
               {main ? (
                 <Button onClick={like} size="small">
                   <ThumbUpIcon />

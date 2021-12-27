@@ -8,6 +8,7 @@ import {
 import { Login } from "./Pages/Login";
 import { Register } from "./Pages/Register";
 import { UserPage } from "./Pages/UserPage";
+import { AuthorPage } from "./Pages/AuthorPage";
 import { Home } from "./Pages/Home";
 import { userContext } from "./Helper/User";
 import { useState, useEffect } from "react";
@@ -70,6 +71,7 @@ function App() {
                 )
               }
             />
+            <Route exact path="/author/:name" element={<AuthorPage />} />
           </Routes>
         </Router>
       </div>
