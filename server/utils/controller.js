@@ -72,6 +72,8 @@ export const login = async (req, res) => {
       return res.status(404).json({ error: "Incorrect password" });
     let tokens = jwtTokens(users.rows[0]);
     res.cookie("refresh_token", tokens.refreshToken, { httpOnly: true });
+    console.log(users.rows);
+    res.cookie("id", users.rows[0].user_id, { httpOnly: true });
     res.json(tokens);
   } catch (err) {
     res.status(401).json({ error: err.message });
