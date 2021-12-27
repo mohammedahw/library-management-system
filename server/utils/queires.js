@@ -7,4 +7,5 @@ export const insertUser =
 export const checkUser = "SELECT * FROM USERS WHERE user_email = $1";
 export const selectUsersData = "SELECT * FROM user_data where user_email = $1";
 export const insertUserData =
-  "INSERT INTO user_data (user_email, book_name) values ($1, $2) RETURNING *";
+  "INSERT INTO user_data (user_email, book_name, author, description, genre, img) values ($1, $2, $3, $4, $5, $6) RETURNING *";
+export const deleteUserData = "DELETE FROM user_data WHERE book_name = $1";

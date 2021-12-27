@@ -128,6 +128,10 @@ export const insertIntoUserData = async (req, res) => {
     const results = await localPool.query(insertUserData, [
       req.body.email,
       req.body.book_name,
+      req.body.author,
+      req.body.description,
+      req.body.genre,
+      req.body.img,
     ]);
     res.status(200).json(results.rows[0]);
   } catch (error) {
