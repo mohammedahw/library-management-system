@@ -8,6 +8,7 @@ import {
   checkUser,
   selectUsersData,
   insertUserData,
+  deleteUserData,
 } from "./queires.js";
 import bcrypt from "bcrypt";
 import { jwtTokens } from "./jwt-helpers.js";
@@ -133,6 +134,15 @@ export const insertIntoUserData = async (req, res) => {
       req.body.genre,
       req.body.img,
     ]);
+    res.status(200).json(results.rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+
+export const deleteData = async (req, res) => {
+  try {
+    const results = await localPool.query(deleteUserData, [req.body.book_name]);
     res.status(200).json(results.rows[0]);
   } catch (error) {
     res.status(500).json({ error: error });

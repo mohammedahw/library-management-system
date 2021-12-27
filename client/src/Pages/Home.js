@@ -1,21 +1,15 @@
 import React from "react";
 import { Navbar } from "../components/Navbar";
 import axios from "axios";
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useContext } from "react";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import CircularProgress from "@mui/material/CircularProgress";
 import PropTypes from "prop-types";
+import { BookCard } from "../components/BookCard";
+import { userContext } from "../Helper/User";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -93,6 +87,7 @@ const reducer = (state, action) => {
 
 export const Home = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { user } = useContext(userContext);
 
   useEffect(() => {
     axios
@@ -114,6 +109,16 @@ export const Home = () => {
       });
     if (genre === "All") return;
     dispatch({ type: "FILTER", payload: genre });
+  };
+
+  const handleLike = (email, book_name, author, genre, img) => {
+    axios.post("http://localhost:5000/api/user_data", {
+      email,
+      book_name,
+      author,
+      genre,
+      img,
+    });
   };
 
   return (
@@ -170,56 +175,17 @@ export const Home = () => {
             state.books.map((book) => {
               const { id, book_name, author, genre, img } = book;
               return (
-                <Grid item xs={2} sm={4} md={4} key={id} sx={{ my: 5 }}>
-                  <Item
-                    sx={{
-                      maxWidth: 250,
-                      backgroundColor: "black",
-                      mx: "auto",
-                    }}
-                  >
-                    <Card
-                      sx={{
-                        maxWidth: 250,
-                        color: "white",
-                        backgroundColor: "black",
-                      }}
-                    >
-                      <CardMedia component="img" height="200" image={img} />
-                      <CardContent>
-                        <Typography
-                          gutterBottom
-                          variant="body2"
-                          component="div"
-                        >
-                          {book_name}
-                        </Typography>
-                      </CardContent>
-                      <CardActions>
-                        <Button size="small">
-                          <Typography
-                            gutterBottom
-                            variant="body3"
-                            component="div"
-                            style={{ textTransform: "capitalize" }}
-                          >
-                            {genre}
-                          </Typography>
-                        </Button>
-                        <Button size="small">
-                          <Typography
-                            gutterBottom
-                            variant="body3"
-                            component="div"
-                            style={{ textTransform: "capitalize" }}
-                          >
-                            {author}
-                          </Typography>
-                        </Button>
-                      </CardActions>
-                    </Card>
-                  </Item>
-                </Grid>
+                <BookCard
+                  main={true}
+                  key={id}
+                  book_name={book_name}
+                  author={author}
+                  img={img}
+                  genre={genre}
+                  like={() =>
+                    handleLike(user.userEmail, book_name, author, genre, img)
+                  }
+                />
               );
             })
           )}
