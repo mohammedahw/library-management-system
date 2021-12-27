@@ -72,6 +72,7 @@ export const login = async (req, res) => {
       return res.status(404).json({ error: "Incorrect password" });
     let tokens = jwtTokens(users.rows[0]);
     res.cookie("refresh_token", tokens.refreshToken, { httpOnly: true });
+    res.cookie("email", email);
     res.json({
       accesToken: tokens.accesToken,
       refreshToken: tokens.refreshToken,
@@ -112,7 +113,8 @@ export const delAuth = (req, res) => {
 
 export const getUsersData = (req, res) => {
   try {
-    localPool.query(selectUsersData, (error, results) => {
+    const email = req.cookies.email;
+    localPool.query(selectUsersData, [email], (error, results) => {
       if (error) throw error;
       res.status(200).json(results.rows);
     });

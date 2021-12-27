@@ -17,7 +17,8 @@ export const Navbar = ({ main }) => {
   const { user, setUser } = useContext(userContext);
 
   const handleLogOut = () => {
-    localStorage.removeItem("email");
+    Cookies.remove("email");
+    Cookies.remove("id");
     Cookies.remove("refresh_token");
     setUser({ email: "", loggedIn: false });
     return;
@@ -58,15 +59,22 @@ export const Navbar = ({ main }) => {
             </Link>
           </Button>
           {user.loggedIn && (
-            <Button style={{ color: "white" }}>
-              <Typography
-                variant="h6"
-                component="div"
-                style={{ textTransform: "capitalize" }}
-              >
-                Your Library
-              </Typography>
-            </Button>
+            <Link
+              to={`/users/${Cookies.get("id")}`}
+              underline="none"
+              color="white"
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              <Button style={{ color: "white" }}>
+                <Typography
+                  variant="h6"
+                  component="div"
+                  style={{ textTransform: "capitalize" }}
+                >
+                  Your Library
+                </Typography>
+              </Button>
+            </Link>
           )}
           {main && !user.loggedIn && (
             <Button sx={{ ml: "auto", textTransform: "capitalize" }}>

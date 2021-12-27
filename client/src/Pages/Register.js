@@ -33,7 +33,8 @@ export const Register = () => {
       });
       setUser({ userEmail: email, loggedIn: true });
       Cookies.set("refresh_token", results.data.refreshToken);
-      localStorage.setItem("email", email);
+      Cookies.set("email", email);
+      Cookies.set("id", results.data.id);
     } catch (err) {
       alert("Invalid Information");
     }

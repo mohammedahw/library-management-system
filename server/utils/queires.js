@@ -5,6 +5,6 @@ export const selectUsers = "SELECT * FROM USERS";
 export const insertUser =
   "INSERT INTO USERS ( user_email, user_password) values ($1,$2) RETURNING *";
 export const checkUser = "SELECT * FROM USERS WHERE user_email = $1";
-export const selectUsersData = "SELECT * FROM user_data";
+export const selectUsersData = "SELECT * FROM user_data where user_email = $1";
 export const insertUserData =
   "INSERT INTO user_data (user_email, book_name) values ($1, $2) RETURNING *";

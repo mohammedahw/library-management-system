@@ -34,8 +34,8 @@ export const Login = () => {
         loggedIn: true,
       });
       Cookies.set("refresh_token", results.data.refreshToken);
-      localStorage.setItem("email", email);
-      console.log(results);
+      Cookies.set("email", email);
+      Cookies.set("id", results.data.id);
     } catch (err) {
       alert("invalid Information");
     }

@@ -7,10 +7,12 @@ import {
 } from "react-router-dom";
 import { Login } from "./Pages/Login";
 import { Register } from "./Pages/Register";
+import { UserPage } from "./Pages/UserPage";
 import { Home } from "./Pages/Home";
 import { userContext } from "./Helper/User";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 function App() {
   const [user, setUser] = useState({
@@ -35,7 +37,7 @@ function App() {
   }
 
   useEffect(() => {
-    const email = localStorage.getItem("email");
+    const email = Cookies.get("email");
     if (email)
       setUser(() => {
         return { userEmail: email, loggedIn: true };
@@ -57,6 +59,16 @@ function App() {
               exact
               path="/register"
               element={user.loggedIn ? <Navigate to="/" /> : <Register />}
+            />
+            <Route
+              path="/users/:id"
+              element={
+                typeof Cookies.get("email") === "string" ? (
+                  <UserPage />
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
             />
           </Routes>
         </Router>
