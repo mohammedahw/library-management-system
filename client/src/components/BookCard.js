@@ -79,7 +79,7 @@ export const BookCard = ({
                 </Button>
               ) : (
                 <Button size="small" onClick={remove}>
-                  <RemoveIcon />
+                  <RemoveIcon style={{ color: "red" }} />
                 </Button>
               )}
             </CardActions>
